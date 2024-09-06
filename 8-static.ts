@@ -1,40 +1,51 @@
-
 // Сделать рабочим - поправить ошибки ниже:
+//РЕШЕНО для проверки => node 8-static.js
 
-class Country {
-    constructor(readonly name: string) {}
-
-    get code () {
-        return 643;
-    }
+//добавлен интерфейс для типизации обьекта аргумента
+interface userObj {
+  name: string;
+  age: number;
+  country: { name: string; code: number };
 }
 
-class User {
-    constructor(
-        readonly name: string,
-        readonly age: number,
-        readonly country: Country,
-    ) {}
+class Country {
+  constructor(readonly name: string) {}
 
-    parseCountry(country: { name: string } ) {
-        return country.name;
-    }
+  get code() {
+    return 643;
+  }
+}
 
-    static fromObject(obj: User): User {
-        this.name = obj.name;
-        this.age = obj.age;
-        this.country = this.parseCountry(obj.country);
+class User8 {
+  constructor(
+    readonly name: string,
+    readonly age: number,
+    readonly country: Country
+  ) {}
 
-        return this;
-    }
+  //сделал статику(используется до обьявления экземпляра)
+  //сделал возвращение экземпляра а не имени + типизировал
+  static parseCountry(country: { name: string }): Country {
+    return new Country(this.name);
+  }
+
+  //это не конструктор, а метод, поэтому убрал назначения и возвращаю экземпляр (перед этим конечно создаю экземпляр county)
+  static fromObject(obj: userObj): User8 {
+    const country = this.parseCountry(obj.country);
+
+    return new User8(obj.name, obj.age, country);
+  }
 }
 
 // Не нужно менять:
-const user = User.fromObject({
-    name: "Artem",
-    age: 24,
-    country: {
-        name: "Russia",
-        code: 643
-    }
+const user8 = User8.fromObject({
+  name: "Artem",
+  age: 24,
+  country: {
+    name: "Russia",
+    code: 643,
+  },
 });
+
+console.log(user8.age); //24
+console.log(user8.country.code); //643

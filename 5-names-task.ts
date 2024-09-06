@@ -2,36 +2,37 @@
 
 // Требуется подобрать соответствующие названия переменным, функциям, методам и тд...
 
-type Callback<T> = (event: T) => void;
+//РЕШИЛ я так понял в класс можно добавлять разные функции, удалять их, а так же вызывать их с общим аргументом
+//для запуска node 5-names-task.js
+type Callback<T> = (eventData: T) => void;
 
-class E<T> {
-  private ss = new Set<Callback<T>>();
+class Events<T> {
+  private eventStack = new Set<Callback<T>>();
 
-  s(c: Callback<T>) {
-    this.ss.add(c);
-
-    return c;
+  add(callback: Callback<T>) {
+    this.eventStack.add(callback);
+    return callback;
   }
 
-  u(c: Callback<T>) {
-    return this.ss.delete(c);
+  delete(callback: Callback<T>) {
+    return this.eventStack.delete(callback);
   }
 
-  e(v: T) {
-    for (const s of this.ss) {
-      s(v);
+  call(eventData: T) {
+    for (const callback of this.eventStack) {
+      callback(eventData);
     }
   }
 }
 
-const e = new E<number>();
+const numberEvents = new Events<number>();
 
-const s = e.s((v) => {
-  console.log(v);
+const newEvents = numberEvents.add((data) => {
+  console.log(data);
 });
 
-e.e(5);
+numberEvents.call(5);
 
-e.u(s);
+numberEvents.delete(newEvents);
 
-e.e(10);
+numberEvents.call(10);
