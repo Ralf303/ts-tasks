@@ -1,17 +1,17 @@
 // Протипизируете код ниже:
 //РЕШЕНО самая быстрая и легкая задачка
-class Sort<t> {
-  constructor(private _elements: t[]) {}
+class Sort<T> {
+  constructor(private _elements: T[]) {}
 
-  get elements(): t[] {
+  get elements(): T[] {
     return this._elements;
   }
 }
 
-class Method<t> {
-  constructor(private _sort: Sort<t>) {}
+class Method<T> {
+  constructor(private _sort: Sort<T>) {}
 
-  get sort(): Sort<t> {
+  get sort(): Sort<T> {
     return this._sort;
   }
 }

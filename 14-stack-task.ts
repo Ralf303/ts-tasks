@@ -6,33 +6,51 @@
     max - возвращает максимальное значение элемента
     count - возвращает количество элементов
 */
-//РЕШЕНО для проверки => node 14-stack-task.js
-
 class MaxStack {
-  constructor(readonly _stack: number[] = []) {}
+  private _stack: number[];
+  //добавил доп переменную максимаьных значений и сделал логи их обновления
+  private _maxStack: number[];
 
-  get stack(): number[] {
+  constructor(stack: number[]) {
+    this._stack = [];
+    this._maxStack = [];
+
+    for (const value of stack) {
+      this.push(value);
+    }
+  }
+
+  get stack() {
     return this._stack;
   }
 
-  get count(): number {
-    return this.stack.length;
+  get count() {
+    return this._stack.length;
   }
 
-  push(value: number): void {
+  push(value: number) {
     this._stack.push(value);
+
+    if (this._maxStack.length === 0 || value >= this.max()) {
+      this._maxStack.push(value);
+    }
   }
 
-  pop(): number | undefined {
-    return this._stack.pop();
+  pop() {
+    const value = this._stack.pop();
+
+    if (value === this.max()) {
+      this._maxStack.pop();
+    }
+    return value;
   }
 
-  top(): number | undefined {
+  top() {
     return this._stack[this._stack.length - 1];
   }
 
-  max(): number {
-    return Math.max(...this._stack);
+  max() {
+    return this._maxStack[this._maxStack.length - 1];
   }
 }
 

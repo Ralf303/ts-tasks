@@ -36,7 +36,11 @@ class Book {
   }
 }
 
-function New<t>(newlable: new (...a: any[]) => t, params: any[]): t {
+//ввел второй дженерик, для типизации аргументов
+function New<T, A extends any[]>(
+  newlable: new (...args: A) => T,
+  params: A
+): T {
   return new newlable(...params);
 }
 

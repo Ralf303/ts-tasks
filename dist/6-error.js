@@ -1,5 +1,16 @@
+"use strict";
 // 6 Требуется найти одну ошибку в следующем коде:
-var str = "\npurschases(\n  Apple(\n    price: 100\n  ),\n  Banana(\n    price: 200\n  )\n)\n";
+//РЕШЕНО для теста node 6-error.js
+const str = `
+purschases(
+  Apple(
+    price: 100
+  ),
+  Banana(
+    price: 200
+  )
+)
+`;
 /**
  * Находит первое выражение в скобках, начиная с заданной позиции в строке.
  *
@@ -9,15 +20,15 @@ var str = "\npurschases(\n  Apple(\n    price: 100\n  ),\n  Banana(\n    price: 
  */
 function bracket(str, pos) {
     // Находим индекс открывающей скобки, начиная с заданной позиции
-    var openIndex = str.indexOf("(", pos);
+    const openIndex = str.indexOf("(", pos);
     // Если открывающая скобка не найдена, выбрасывается ошибка
     if (openIndex === -1) {
-        throw new Error("Invalid index: ".concat(pos));
+        throw new Error(`Invalid index: ${pos}`);
     }
     // Инициализируем счетчик для отслеживания вложенности скобок
-    var count = 1;
+    let count = 1;
     // Перебираем символы после открывающей скобки
-    for (var i = openIndex + 1; i < str.length; i++) {
+    for (let i = openIndex + 1; i < str.length; i++) {
         // Если встречается открывающая скобка, увеличиваем счетчик
         if (str[i] === "(") {
             count++;
@@ -25,6 +36,7 @@ function bracket(str, pos) {
         // Если встречается закрывающая скобка, уменьшаем счетчик
         else if (str[i] === ")") {
             // Если счетчик становится равным 1, то нашли нужную скобку
+            //ТУТ ЕДИНИЧКУ ПОМЕНЯЛ НА НОЛИК, НА САМОМ ДЕЛЕ МЕТОДОМ ТЫКА НАКТЫКАЛ, ПОДОЗРЕВАЮ ЧТО КОСЯК В МЕТОДЕ substring
             if (--count === 0) {
                 // Возвращаем подстроку от открывающей скобки до закрывающей
                 return str.substring(openIndex, i + 1);
@@ -32,7 +44,7 @@ function bracket(str, pos) {
         }
     }
     // Если скобка не найдена, выбрасывается ошибка
-    throw new Error("Invalid index: ".concat(pos));
+    throw new Error(`Invalid index: ${pos}`);
 }
 // Вызываем функцию и выводим результат в консоль
 console.log(bracket(str, 2));

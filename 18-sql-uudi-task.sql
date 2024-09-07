@@ -19,11 +19,23 @@ CREATE TABLE users (
 );
 
 /*
-Довольна простая задачка если я все правильно понял
+Вообще не легкая задачка, узнал про uuid, узнал про cte, весь гугл облазил
 */
-SELECT name
-FROM users
+WITH
+    cte AS (
+        SELECT uuid, name, ROW_NUMBER() OVER (
+                ORDER BY uuid
+            ) AS row_num
+        FROM users
+    )
+SELECT uuid, name
+FROM cte
 WHERE
-    uuid > 'ТУТ УКАЗЫВАЕМ uuid'
-ORDER BY uuid
+    row_num > (
+        SELECT row_num
+        FROM cte
+        WHERE
+            uuid = 'UUID-указанный'
+    )
+ORDER BY row_num
 LIMIT 100;

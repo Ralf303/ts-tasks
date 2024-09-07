@@ -1,38 +1,33 @@
+"use strict";
 // Сделать рабочим - поправить ошибки ниже:
-//РЕШЕНО
-var Country = /** @class */ (function () {
-    function Country(name) {
+//РЕШЕНО для проверки => node 8-static.js
+class Country {
+    constructor(name) {
         this.name = name;
     }
-    Object.defineProperty(Country.prototype, "code", {
-        get: function () {
-            return 643;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return Country;
-}());
-var User8 = /** @class */ (function () {
-    function User8(name, age, country) {
+    get code() {
+        return 643;
+    }
+}
+class User8 {
+    constructor(name, age, country) {
         this.name = name;
         this.age = age;
         this.country = country;
     }
     //сделал статику(используется до обьявления экземпляра)
     //сделал возвращение экземпляра а не имени + типизировал
-    User8.parseCountry = function (country) {
+    static parseCountry(country) {
         return new Country(this.name);
-    };
+    }
     //это не конструктор, а метод, поэтому убрал назначения и возвращаю экземпляр (перед этим конечно создаю экземпляр county)
-    User8.fromObject = function (obj) {
-        var country = this.parseCountry(obj.country);
+    static fromObject(obj) {
+        const country = this.parseCountry(obj.country);
         return new User8(obj.name, obj.age, country);
-    };
-    return User8;
-}());
+    }
+}
 // Не нужно менять:
-var user8 = User8.fromObject({
+const user8 = User8.fromObject({
     name: "Artem",
     age: 24,
     country: {
