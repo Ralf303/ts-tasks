@@ -1,51 +1,42 @@
-// Сделать рабочим - поправить ошибки ниже:
-//РЕШЕНО для проверки => node 8-static.js
-
-//добавлен интерфейс для типизации обьекта аргумента
-interface userObj {
+interface IUser {
   name: string;
   age: number;
   country: { name: string; code: number };
 }
 
 class Country {
-  constructor(readonly name: string) {}
+  constructor(readonly name: string, private readonly _code: number) {}
 
   get code() {
-    return 643;
+    return this._code;
+  }
+
+  static parse(countryData: { name: string; code: number }): Country {
+    return new Country(countryData.name, countryData.code);
   }
 }
 
-class User8 {
+class User {
   constructor(
     readonly name: string,
     readonly age: number,
     readonly country: Country
   ) {}
 
-  //сделал статику(используется до обьявления экземпляра)
-  //сделал возвращение экземпляра а не имени + типизировал
-  static parseCountry(country: { name: string }): Country {
-    return new Country(this.name);
-  }
-
-  //это не конструктор, а метод, поэтому убрал назначения и возвращаю экземпляр (перед этим конечно создаю экземпляр county)
-  static fromObject(obj: userObj): User8 {
-    const country = this.parseCountry(obj.country);
-
-    return new User8(obj.name, obj.age, country);
+  static fromObject(userInfo: IUser): User {
+    const country = Country.parse(userInfo.country);
+    return new User(userInfo.name, userInfo.age, country);
   }
 }
 
-// Не нужно менять:
-const user8 = User8.fromObject({
+const user = User.fromObject({
   name: "Artem",
   age: 24,
   country: {
     name: "Russia",
-    code: 643,
+    code: 812,
   },
 });
 
-console.log(user8.age); //24
-console.log(user8.country.code); //643
+console.log(user.age); // 24
+console.log(user.country.code); // 812

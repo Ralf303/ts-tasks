@@ -1,58 +1,50 @@
-
 type Nullable<T> = T | null;
 
-class User {
-    private readonly _orders: Order[] = [];
+class User12 {
+  private readonly _orders: Order[] = [];
 
-    constructor(
-        readonly name: string,
-    ) {}
+  constructor(readonly name: string) {}
 
-    addOrder(order: Order) {
-        this._orders.push(order);
+  addOrder(order: Order) {
+    this._orders.push(order);
 
-        order.owner = this;
-    }
+    order.owner = this;
+  }
 }
 
 class Order {
-    private readonly _products: Product[] = [];
+  private readonly _products: Product[] = [];
 
-    private _owner: Nullable<User> = null;
+  private _owner: Nullable<User12> = null;
 
-    set owner(owner: Nullable<User>) {
-        this._owner = owner;
+  set owner(owner: Nullable<User12>) {
+    this._owner = owner;
 
-        for(const product of this._products) {
-            product.owner = owner;
-        }
+    for (const product of this._products) {
+      product.owner = owner;
     }
+  }
 
-    addProduct(product: Product) {
-        this._products.push(product);
-        
-        product.owner = this._owner;
-        
-    }
+  addProduct(product: Product) {
+    this._products.push(product);
+
+    product.owner = this._owner;
+  }
 }
 
 class Product {
-    private _owner: Nullable<User> = null;
+  private _owner: Nullable<User12> = null;
 
-    set owner(owner: Nullable<User>) {
-        this._owner = owner;
-    }
+  set owner(owner: Nullable<User12>) {
+    this._owner = owner;
+  }
 
-    constructor(
-        readonly name: string,
-        readonly price: number,    
-    ) {}
+  constructor(readonly name: string, readonly price: number) {}
 }
-
 
 // Реализовать функцию, которая выводит все циклические зависимости в объекте
 
-const user = new User("Alex");
+const user12 = new User12("Alex");
 
 const order1 = new Order();
 
@@ -62,7 +54,7 @@ const product2 = new Product("Product2", 20);
 order1.addProduct(product1);
 order1.addProduct(product2);
 
-user.addOrder(order1);
+user12.addOrder(order1);
 
 /*
 <ref *1> User {
@@ -95,28 +87,28 @@ user.addOrder(order1);
 // Доработать функцию так, чтобы обход не был рекурсивным...
 
 function traverseObject(obj: any, callback: (key: string, value: any) => void) {
-    if (obj === null || typeof obj !== 'object') {
-        return;
-    }
+  if (obj === null || typeof obj !== "object") {
+    return;
+  }
 
-    const stack = [obj];
-  
-    while (stack.length > 0) {
-      const currentObj = stack.pop()!;
-  
-      for (const key in currentObj) {
-        if (currentObj.hasOwnProperty(key)) {
-          const value = currentObj[key];
-          callback(key, value);
-  
-          if (typeof value === 'object' && value !== null) {
-            stack.push(value);
-          }
+  const stack = [obj];
+
+  while (stack.length > 0) {
+    const currentObj = stack.pop()!;
+
+    for (const key in currentObj) {
+      if (currentObj.hasOwnProperty(key)) {
+        const value = currentObj[key];
+        callback(key, value);
+
+        if (typeof value === "object" && value !== null) {
+          stack.push(value);
         }
       }
     }
   }
+}
 
 traverseObject(user, (key, value) => {
-    console.log(`${key} - ${value.constructor.name}`);
-})
+  console.log(`${key} - ${value.constructor.name}`);
+});
