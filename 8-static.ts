@@ -1,40 +1,42 @@
-
-// Сделать рабочим - поправить ошибки ниже:
+interface IUser {
+  name: string;
+  age: number;
+  country: { name: string; code: number };
+}
 
 class Country {
-    constructor(readonly name: string) {}
+  constructor(readonly name: string, private readonly _code: number) {}
 
-    get code () {
-        return 643;
-    }
+  get code() {
+    return this._code;
+  }
+
+  static parse(countryData: { name: string; code: number }): Country {
+    return new Country(countryData.name, countryData.code);
+  }
 }
 
 class User {
-    constructor(
-        readonly name: string,
-        readonly age: number,
-        readonly country: Country,
-    ) {}
+  constructor(
+    readonly name: string,
+    readonly age: number,
+    readonly country: Country
+  ) {}
 
-    parseCountry(country: { name: string } ) {
-        return country.name;
-    }
-
-    static fromObject(obj: User): User {
-        this.name = obj.name;
-        this.age = obj.age;
-        this.country = this.parseCountry(obj.country);
-
-        return this;
-    }
+  static fromObject(userInfo: IUser): User {
+    const country = Country.parse(userInfo.country);
+    return new User(userInfo.name, userInfo.age, country);
+  }
 }
 
-// Не нужно менять:
 const user = User.fromObject({
-    name: "Artem",
-    age: 24,
-    country: {
-        name: "Russia",
-        code: 643
-    }
+  name: "Artem",
+  age: 24,
+  country: {
+    name: "Russia",
+    code: 812,
+  },
 });
+
+console.log(user.age); // 24
+console.log(user.country.code); // 812

@@ -1,13 +1,58 @@
-
 /* 
     Напиши класс стека MaxStack и оптимизируйте его, первый пришёл - последний вышел, где есть методы:
     push - добавляет элемент в конец стека
     pop - выбирает элемент из конца стека и удаляет его
     top - возвращает верхний элемент
     max - возвращает максимальное значение элемента
+    count - возвращает количество элементов
 */
+class MaxStack {
+  private _stack: number[];
+  //добавил доп переменную максимаьных значений и сделал логи их обновления
+  private _maxStack: number[];
 
-class MaxStack {}
+  constructor(stack: number[]) {
+    this._stack = [];
+    this._maxStack = [];
+
+    for (const value of stack) {
+      this.push(value);
+    }
+  }
+
+  get stack() {
+    return this._stack;
+  }
+
+  get count() {
+    return this._stack.length;
+  }
+
+  push(value: number) {
+    this._stack.push(value);
+
+    if (this._maxStack.length === 0 || value >= this.max()) {
+      this._maxStack.push(value);
+    }
+  }
+
+  pop() {
+    const value = this._stack.pop();
+
+    if (value === this.max()) {
+      this._maxStack.pop();
+    }
+    return value;
+  }
+
+  top() {
+    return this._stack[this._stack.length - 1];
+  }
+
+  max() {
+    return this._maxStack[this._maxStack.length - 1];
+  }
+}
 
 const stack = new MaxStack([1, 3, 5]);
 
@@ -17,8 +62,8 @@ stack.push(2);
 console.log(stack.stack);
 
 const count = stack.count;
-for(let i = 0; i < count; i++) {
-    console.log(`Max: ${stack.max}, Pop: ${stack.pop()}`);
+for (let i = 0; i < count; i++) {
+  console.log(`Max: ${stack.max()}, Pop: ${stack.pop()}`);
 }
 
 /*
